@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@600;700;800&display=swap');
+
+:root {
+  --bg: #05070d;
+  --bg-elevated: #0b1020;
+  --line: rgba(113, 151, 255, 0.18);
+  --ink: #f3f7ff;
+  --ink-soft: #d7e4ff;
+  --ink-dim: #9fb3d8;
+  --blue-200: #9fd2ff;
+  --blue-400: #42a5ff;
+  --lime: #f4ff55;
+  --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.28);
+  --font-display: 'Syne', 'Segoe UI', sans-serif;
+  --font-body: 'Space Grotesk', 'Segoe UI', sans-serif;
+
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top, rgba(30, 60, 150, 0.18), transparent 20%),
+    linear-gradient(180deg, #03050a 0%, #08101e 100%);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  font-weight: 500;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.6), transparent 85%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
