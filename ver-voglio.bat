@@ -1,5 +1,5 @@
 @echo off
 cd /d "%~dp0"
-start "" cmd /k ""C:\Program Files\nodejs\npm.cmd" run dev -- --host 127.0.0.1 --port 4173"
+start "Voglio Dev" powershell.exe -ExecutionPolicy Bypass -NoExit -Command "Set-Location -LiteralPath '%~dp0'; npm run dev"
 timeout /t 4 /nobreak >nul
-start http://127.0.0.1:4173/
+start http://localhost:5173/
