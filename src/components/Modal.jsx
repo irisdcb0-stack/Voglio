@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function Modal({ open, title, children, onClose, onPrimary, primaryLabel = 'Aceptar', secondaryLabel = 'Cancelar' }) {
   if (!open) return null
   const handlePrimary = () => {

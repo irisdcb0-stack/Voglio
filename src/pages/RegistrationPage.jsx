@@ -16,12 +16,12 @@ export default function RegistrationPage() {
       await saveBusinessLead(form)
       setStatus('Registro enviado a Supabase.')
       setForm(initial)
-    } catch (err) {
+    } catch {
       try {
         saveLocalLead(form)
         setStatus('Registro guardado localmente (sin Supabase).')
         setForm(initial)
-      } catch (e) {
+      } catch {
         setStatus('No se pudo guardar el registro.')
       }
     }

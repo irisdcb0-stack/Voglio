@@ -167,12 +167,28 @@ on conflict do nothing;
 grant usage on schema public to anon;
 grant select on public.catalog_items to anon;
 grant insert on public.business_leads to anon;
+grant select on public.business_leads to anon;
 grant insert on public.cupping_requests to anon;
 grant select on public.service_slots to anon;
 grant insert on public.service_bookings to anon;
+grant select on public.service_bookings to anon;
 grant update on public.service_slots to anon;
 grant insert on public.order_requests to anon;
+grant select on public.order_requests to anon;
 
 -- Also grant on sequences so inserts that default to gen_random_uuid() work
 grant usage on all sequences in schema public to anon;
+
+-- SELECT policies for admin panel (AdminPage reads all submissions)
+drop policy if exists "anon can read order_requests" on public.order_requests;
+create policy "anon can read order_requests"
+  on public.order_requests for select to anon using (true);
+
+drop policy if exists "anon can read business_leads" on public.business_leads;
+create policy "anon can read business_leads"
+  on public.business_leads for select to anon using (true);
+
+drop policy if exists "anon can read service_bookings" on public.service_bookings;
+create policy "anon can read service_bookings"
+  on public.service_bookings for select to anon using (true);
 

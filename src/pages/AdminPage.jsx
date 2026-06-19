@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react'
-import { readLocalBookings } from '../lib/localFallbacks'
-import { readLocalBookings as readBookingsAlias } from '../lib/localFallbacks'
 import { fetchServiceBookings, fetchOrderRequests, fetchBusinessLeads, hasSupabaseConfig, diagnoseSupabase } from '../lib/supabase'
 
 export default function AdminPage() {
@@ -10,22 +8,22 @@ export default function AdminPage() {
   const [remoteMode, setRemoteMode] = useState(false)
 
   useEffect(() => {
-    // load local data first
-    try {
-      const b = JSON.parse(localStorage.getItem('voglio-local-bookings') || '[]')
-      const o = JSON.parse(localStorage.getItem('voglio-local-orders') || '[]')
-      const l = JSON.parse(localStorage.getItem('voglio-local-leads') || '[]')
-      setBookings(b)
-      setOrders(o)
-      setLeads(l)
-    } catch {
-      setBookings([])
-      setOrders([])
-      setLeads([])
-    }
+    async function init() {
+      // load local data first
+      try {
+        const b = JSON.parse(localStorage.getItem('voglio-local-bookings') || '[]')
+        const o = JSON.parse(localStorage.getItem('voglio-local-orders') || '[]')
+        const l = JSON.parse(localStorage.getItem('voglio-local-leads') || '[]')
+        setBookings(b)
+        setOrders(o)
+        setLeads(l)
+      } catch {
+        setBookings([])
+        setOrders([])
+        setLeads([])
+      }
 
-    // if Supabase available, try to load remote data
-    async function loadRemote() {
+      // if Supabase available, try to load remote data
       if (!hasSupabaseConfig) return
       try {
         const [rb, ro, rl] = await Promise.all([fetchServiceBookings(), fetchOrderRequests(), fetchBusinessLeads()])
@@ -38,7 +36,7 @@ export default function AdminPage() {
       }
     }
 
-    loadRemote()
+    init()
   }, [])
 
   function exportJson(list, name) {
@@ -51,14 +49,15 @@ export default function AdminPage() {
     URL.revokeObjectURL(url)
   }
 
-  function clearAll() {
-    localStorage.removeItem('voglio-local-bookings')
-    localStorage.removeItem('voglio-local-orders')
-    localStorage.removeItem('voglio-local-leads')
-    setBookings([])
-    setOrders([])
-    setLeads([])
-  }
+  // clearAll is kept as a utility but not used in current UI
+  // function clearAll() {
+  //   localStorage.removeItem('voglio-local-bookings')
+  //   localStorage.removeItem('voglio-local-orders')
+  //   localStorage.removeItem('voglio-local-leads')
+  //   setBookings([])
+  //   setOrders([])
+  //   setLeads([])
+  // }
 
   function reloadLocal() {
     try {

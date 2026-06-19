@@ -125,16 +125,22 @@ export default function CartDrawer({ cart, cartTotal, open, onClose, onClearCart
             // save locally as fallback
             try {
               saveLocalOrder(payload)
-            } catch {}
+            } catch {
+              // fallback local save failed, but order was sent to Supabase
+            }
 
             onClearCart()
             onClose()
-            setCheckoutOpen(false)
             setCustomerName('')
             setCustomerEmail('')
             setPhone('')
             setNotes('')
-            setModal({ open: true, title: 'Compra registrada', message: 'Pedido registrado correctamente.' })
+            
+            // Close checkout modal first, then show success modal
+            setCheckoutOpen(false)
+            setTimeout(() => {
+              setModal({ open: true, title: 'Compra registrada', message: 'Pedido registrado correctamente.' })
+            }, 100)
           } catch (err) {
             console.error(err)
             const msg = err?.message || 'Error al registrar el pedido.'
@@ -144,7 +150,12 @@ export default function CartDrawer({ cart, cartTotal, open, onClose, onClearCart
               details = '\n\nCódigo 401: revisa que `VITE_SUPABASE_ANON_KEY` y `VITE_SUPABASE_URL` estén correctos y reinicia el servidor de desarrollo.'
               details += '\n\nDiagnóstico: ' + JSON.stringify(diag)
             }
-            setModal({ open: true, title: 'Error', message: msg + details })
+            
+            // Close checkout modal first, then show error modal
+            setCheckoutOpen(false)
+            setTimeout(() => {
+              setModal({ open: true, title: 'Error', message: msg + details })
+            }, 100)
           } finally {
             setLoading(false)
           }
