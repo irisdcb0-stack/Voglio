@@ -957,6 +957,21 @@
 }
 .modal-actions { text-align: right }
 
+.form-error {
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba(255, 79, 89, 0.45);
+  border-radius: 10px;
+  background: rgba(255, 79, 89, 0.12);
+  color: #ffd7db;
+}
+
+.modal-actions button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+  transform: none;
+}
+
 .day-column {
   padding: 1rem;
   background: rgba(10, 13, 22, 0.98);

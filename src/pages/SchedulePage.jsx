@@ -1,9 +1,20 @@
 import { useState } from 'react'
-import { saveServiceBooking } from '../lib/supabase'
+import { saveBusinessLead, saveServiceBooking } from '../lib/supabase'
 import { saveLocalBooking } from '../lib/localFallbacks'
 import { formatDateLabel, formatTimeRange } from '../lib/formatters'
 import Calendar from '../components/Calendar'
 import Seo from '../components/Seo'
+
+const initialLead = {
+  business_name: '',
+  contact_name: '',
+  email: '',
+  phone: '',
+  business_type: '',
+  interest_area: 'tueste',
+  monthly_volume: '',
+  message: '',
+}
 
 const initialBooking = {
   requester_name: '',
@@ -18,7 +29,9 @@ export default function SchedulePage({ groupedSlots, setSlots, slotState }) {
   const availableDates = Object.keys(groupedSlots)
   const [selectedSlotId, setSelectedSlotId] = useState('')
   const [selectedDate, setSelectedDate] = useState('')
+  const [leadForm, setLeadForm] = useState(initialLead)
   const [bookingForm, setBookingForm] = useState(initialBooking)
+  const [leadStatus, setLeadStatus] = useState('')
   const [bookingStatus, setBookingStatus] = useState('')
 
   const resolvedDate = availableDates.includes(selectedDate) ? selectedDate : availableDates[0] || ''
@@ -32,16 +45,17 @@ export default function SchedulePage({ groupedSlots, setSlots, slotState }) {
   const [manualPhone, setManualPhone] = useState('')
   const [manualNotes, setManualNotes] = useState('')
 
-  // handleLeadSubmit kept for future use but currently unused
-  // async function handleLeadSubmit(event) {
-  //   event.preventDefault()
-  //   try {
-  //     await saveBusinessLead(leadForm)
-  //     setLeadForm(initialLead)
-  //   } catch (error) {
-  //     // handle error
-  //   }
-  // }
+  async function handleLeadSubmit(event) {
+    event.preventDefault()
+    setLeadStatus('Enviando solicitud...')
+    try {
+      await saveBusinessLead(leadForm)
+      setLeadStatus('Solicitud enviada con exito.')
+      setLeadForm(initialLead)
+    } catch (error) {
+      setLeadStatus(error.message)
+    }
+  }
 
   async function handleBookingSubmit(event) {
     event.preventDefault()
@@ -88,7 +102,7 @@ export default function SchedulePage({ groupedSlots, setSlots, slotState }) {
               : slot,
           ),
         )
-      } catch {
+      } catch (err) {
         setBookingStatus(error.message || 'No se pudo reservar el horario.')
       }
     }
