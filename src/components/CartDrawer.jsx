@@ -95,7 +95,7 @@ export default function CartDrawer({ cart, cartTotal, open, onClose, onClearCart
 
   return (
     <>
-      <div className={open ? 'cart-drawer-shell open' : 'cart-drawer-shell'} aria-hidden={!open} inert={!open}>
+      <div className={open ? 'cart-drawer-shell open' : 'cart-drawer-shell'} inert={!open}>
         <button type="button" className="cart-drawer-backdrop" onClick={onClose} aria-label="Cerrar carrito" />
 
         <aside className="cart-drawer-panel" aria-label="Carrito">
